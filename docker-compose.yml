@@ -1,0 +1,44 @@
+version: "3"
+
+services:
+  nginx:
+    image: nginx:1.15.12-alpine
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 0.0.0.0:8500:80
+    env_file:
+      - .env
+    restart: always
+
+  php:
+    build:
+      context: ./docker/php
+    env_file:
+      - .env
+    volumes:
+      - .:/var/www
+    restart: always
+
+  mariadb:
+    image: mariadb:10.3
+    ports:
+      - 0.0.0.0:8501:3306
+    volumes:
+      - ./mariadb:/var/lib/mysql
+    env_file:
+      - .env
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mariadb:db
+    ports:
+      - 0.0.0.0:8502:80
+    env_file:
+      - .env
+    depends_on:
+      - mariadb
+    restart: always
