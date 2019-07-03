@@ -1,7 +1,7 @@
 <?php
 
 
-namespace components;
+namespace system\core;
 
 /**
  * Автозагрузчик
@@ -11,16 +11,16 @@ class Autoloader
     /**
      * Регистрирует автозагрузчик
      */
-    public function register()
+    public static function register()
     {
-        spl_autoload_register([$this, 'loader']);
+        spl_autoload_register([self::class, 'loader']);
     }
 
     /**
      * Подгружает классы
      * @param string $className Имя класса с неймспейсом
      */
-    private function loader($className)
+    private static function loader($className)
     {
         $filePath = ROOT . str_replace('\\','/', $className)  . '.php';
 

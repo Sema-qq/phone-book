@@ -1,14 +1,14 @@
 <?php
 
 
-namespace components;
+namespace system\core;
 
 use PDO;
 
 /**
  * Класс для подключения к базе данных
  */
-class Db
+final class Db
 {
     /** @var PDO объект базы данных */
     private static $db = null;

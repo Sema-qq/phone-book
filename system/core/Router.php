@@ -1,7 +1,7 @@
 <?php
 
 
-namespace components;
+namespace system\core;
 
 /**
  * Маршрутизатор
@@ -46,7 +46,7 @@ class Router
                 # получаем имя контроллера
                 $controllerName = ucfirst(array_shift($segments) . 'Controller');
                 # получаем имя экшена
-                $actionName = 'action' . ucfirst(array_shift($segments));
+                $actionName = 'action' . strtok(ucfirst(array_shift($segments)), '?');
                 # остальное это параметры
                 $parameters = $segments;
                 # формируем имя класса

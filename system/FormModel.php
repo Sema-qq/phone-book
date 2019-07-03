@@ -1,12 +1,14 @@
 <?php
 
 
-namespace components;
+namespace system;
+
+use system\core\Model;
 
 /**
  * Базовый класс модели для работы с формой
  */
-class FormModel
+class FormModel extends Model
 {
 
 }

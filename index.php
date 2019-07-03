@@ -1,22 +1,19 @@
 <?php
 
-use components\Autoloader;
-use components\Router;
+use system\core\Application;
+use system\core\Autoloader;
 
-try {
-    ini_set('display_errors', 1);
+ini_set('display_errors', 1);
 
-    error_reporting(E_ALL);
+error_reporting(E_ALL);
 
-    define('ROOT', dirname(__FILE__) . DIRECTORY_SEPARATOR);
+define('ROOT', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
-    require_once(ROOT . 'components/Autoloader.php');
+require_once(ROOT . 'system/core/Autoloader.php');
 
-    $loader = new Autoloader();
-    $loader->register();
+$config = require ROOT . 'config/config.php';
 
-    $router = new Router();
-    $router->run();
-} catch (Exception $e) {
-    echo $e->getMessage();
-}
+Autoloader::register();
+
+$app = new Application();
+$app->start($config);

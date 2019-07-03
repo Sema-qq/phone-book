@@ -1,12 +1,14 @@
 <?php
 
 
-namespace components;
+namespace system;
+
+use system\core\Model;
 
 /**
  * Базовый клас модели для работы с базой данных
  */
-class DbModel
+class DbModel extends Model
 {
 
 }

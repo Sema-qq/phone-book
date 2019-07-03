@@ -3,15 +3,26 @@
 
 namespace controllers;
 
-use components\Controller;
+
+use system\core\Controller;
 
 /**
  * Контроллер для авторизации и регистрации
  */
 class AuthController extends Controller
 {
-    public function actionIndex()
+    public function actionLogin()
     {
-        var_dump('test');
+        $this->render('login', ['test' => 1]);
+    }
+
+    public function actionSignup()
+    {
+        $this->render('signup', ['test' => 1]);
+    }
+
+    public function actionLogout()
+    {
+        # разлогиниваем пользователя
     }
 }
