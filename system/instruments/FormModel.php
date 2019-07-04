@@ -1,7 +1,7 @@
 <?php
 
 
-namespace system;
+namespace system\instruments;
 
 use system\core\Model;
 

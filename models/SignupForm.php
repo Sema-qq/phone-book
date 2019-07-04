@@ -4,7 +4,7 @@
 namespace models;
 
 
-use system\FormModel;
+use system\instruments\FormModel;
 
 class SignupForm extends FormModel
 {

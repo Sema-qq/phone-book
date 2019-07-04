@@ -4,7 +4,7 @@
 namespace models;
 
 
-use system\DbModel;
+use system\instruments\DbModel;
 
 /**
  * Класс пользователей
@@ -12,11 +12,18 @@ use system\DbModel;
 class User extends DbModel
 {
     /**
-     * Возвращает название таблицы
-     * @return string
+     * @inheritdoc
      */
     public function getTable()
     {
         return 'users';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    function primaryKey()
+    {
+        return 'ID';
     }
 }

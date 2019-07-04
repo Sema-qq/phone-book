@@ -1,7 +1,7 @@
 <?php
 
 
-namespace system;
+namespace system\instruments;
 
 use system\core\Db;
 use system\core\Model;
@@ -30,4 +30,15 @@ abstract class DbModel extends Model
      * @return string
      */
     abstract public function getTable();
+
+    /**
+     *
+     * @return string
+     */
+    abstract function primaryKey();
+
+    public static function getAll()
+    {
+        
+    }
 }
