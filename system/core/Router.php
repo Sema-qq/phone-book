@@ -20,46 +20,74 @@ class Router
     }
 
     /**
+     * Вызывает запрашиваемый энш
+     */
+    public function run()
+    {
+        $uri = $this->getUri();
+
+        # сначала перебираем роуты
+        foreach ($this->routes as $uriPattern => $path) {
+            # проверяем наличие такого запроса в маршрутах
+            if (preg_match("~{$uriPattern}~", '/')) {
+                # получаем внутренний путь из внешнего согласно правилу
+                $internalRoute = preg_replace("~{$uriPattern}~", $path, $uri);
+                if ($this->callAction($internalRoute)) {
+                    return true;
+                }
+            }
+        }
+
+        # если в роутах нет, пробуем найти урлу контроллер и экшн: /controllerName/actionName/params
+        if ($this->callAction($uri)) {
+            return true;
+        }
+
+        # если экшн не нашли, то покажем 404
+        $controller = new Controller();
+        return $controller->showError();
+    }
+
+    /**
      * Возвращает строку запроса
      * @return string
      */
     private function getUri()
     {
-        return !empty($_SERVER['REQUEST_URI']) ? trim($_SERVER['REQUEST_URI'], '/') : null;
+        $uri = !empty($_SERVER['REQUEST_URI']) ? strtok(trim($_SERVER['REQUEST_URI'], '/'), '?') : null;
+        return $uri ? $uri : '/';
     }
 
     /**
-     * Вызывает запрашиваемый энш
+     * Вызывает экшн
+     * @param string $string Строка поиска имени контроллера и экшн с параметрами
+     * @return bool|mixed
      */
-    public function run()
+    private function callAction($string)
     {
-        # получаем строку запроса
-        $uri = !empty($this->getUri()) ? $this->getUri() : '/';
-
-        foreach ($this->routes as $uriPattern => $path) {
-            # проверяем наличие такого запроса в маршрутах
-            if (preg_match("~{$uriPattern}~", $uri)) {
-                # получаем внутренний путь из внешнего согласно правилу
-                $internalRoute = preg_replace("~{$uriPattern}~", $path, $uri);
-                # разбиваем в массив
-                $segments = explode('/', $internalRoute);
-                # получаем имя контроллера
-                $controllerName = ucfirst(array_shift($segments) . 'Controller');
-                # получаем имя экшена
-                $actionName = 'action' . strtok(ucfirst(array_shift($segments)), '?');
-                # остальное это параметры
-                $parameters = $segments;
-                # формируем имя класса
-                $className = '\controllers\\' . $controllerName;
-                # создаем объект контроллера
-                $controllerObject = new $className();
+        # разбиваем в массив
+        $segments = explode('/', $string);
+        # получаем имя контроллера
+        $controllerName = ucfirst(array_shift($segments) . 'Controller');
+        # получаем имя экшена
+        $actionName = 'action' . ucfirst(array_shift($segments));
+        # остальное это параметры
+        $parameters = $segments;
+        # формируем имя класса
+        $className = '\controllers\\' . $controllerName;
+        if (class_exists($className)) {
+            $controller = new $className();
+            # если такого метода нет и экшн не был указан, то обратимся к дефолтному экшену
+            if (!method_exists($controller, $actionName) && $actionName == 'action') {
+                $actionName = 'action' . ucfirst($controller->defaultAction);
+            }
+            # еще раз проверяем, существует ли такой метод
+            if (method_exists($controller, $actionName)) {
                 # вызываем экшн
-                $result = call_user_func_array([$controllerObject, $actionName], $parameters);
-
-                if ($result != null) {
-                    break;
-                }
+                call_user_func_array([$controller, $actionName], $parameters);
+                return true;
             }
         }
+        return false;
     }
 }

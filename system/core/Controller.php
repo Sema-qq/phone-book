@@ -13,6 +13,9 @@ class Controller
     /** @var string Путь к лейаутам */
     const LAYOUT_FOLDER = ROOT . 'views/layouts/';
 
+    /** @var string Дефолтный экшн */
+    public $defaultAction = 'index';
+
     /** @var string Дефолтный лейаут */
     protected $layout = 'main';
 
@@ -20,6 +23,15 @@ class Controller
     private $view;
     /** @var array Данные для представления */
     private $data;
+
+    /**
+     * Возвращает 404
+     * @return mixed
+     */
+    public function showError()
+    {
+        return $this->render('error');
+    }
 
     /**
      * Возвращает представление с лейаутами
@@ -104,6 +116,6 @@ class Controller
      */
     private function getChildClassName()
     {
-        return strtolower(str_replace(['controllers\\', 'Controller'], '', get_class($this)));
+        return strtolower(str_replace(['controllers\\', 'Controller', 'system\core\\'], '', get_class($this)));
     }
 }

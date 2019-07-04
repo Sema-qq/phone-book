@@ -11,13 +11,11 @@ use system\core\Controller;
  */
 class SiteController extends Controller
 {
+    /**
+     * Cтартовая страница
+     */
     public function actionIndex()
     {
         return $this->render('index');
-    }
-
-    public function actionError()
-    {
-        return $this->render('error');
     }
 }

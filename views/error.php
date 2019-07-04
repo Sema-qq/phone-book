@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \components\Controller $this
+ * @var \system\core\Controller $this
  */
 
 \extensions\Helper::getImage('404.jpg');

@@ -3,17 +3,20 @@
 use system\core\Application;
 use system\core\Autoloader;
 
-ini_set('display_errors', 1);
+try {
+    define('ROOT', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
-error_reporting(E_ALL);
+    require_once(ROOT . 'system/core/Autoloader.php');
 
-define('ROOT', dirname(__FILE__) . DIRECTORY_SEPARATOR);
+    require_once(ROOT . 'system/core/base_functions.php');
 
-require_once(ROOT . 'system/core/Autoloader.php');
+    $config = require ROOT . 'config/config.php';
 
-$config = require ROOT . 'config/config.php';
+    Autoloader::register();
 
-Autoloader::register();
-
-$app = new Application();
-$app->start($config);
+    $app = new Application();
+    $app->start($config);
+} catch (Exception $e) {
+    dump($e->getMessage());
+    dump($e->getTrace());
+}

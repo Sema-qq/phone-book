@@ -4,20 +4,11 @@ namespace extensions;
 
 class Helper
 {
-    public static function dump($var)
-    {
-        echo '<pre>';
-        var_dump($var);
-        echo "\n";
-    }
-
-    public static function dd($var)
-    {
-        echo '<pre>';
-        var_dump($var);
-        die;
-    }
-
+    /**
+     * Возвращает картинку
+     * @param string $image
+     * @param bool $basePath
+     */
     public static function getImage($image, $basePath = true)
     {
         $imagePath = $basePath ? "/templates/img/{$image}" : $image;

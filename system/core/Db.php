@@ -8,7 +8,7 @@ use PDO;
 /**
  * Класс для подключения к базе данных
  */
-final class Db
+class Db
 {
     /** @var PDO объект базы данных */
     private static $db = null;
@@ -34,4 +34,5 @@ final class Db
     }
 
     private function __clone () {}
+    private function __wakeup () {}
 }

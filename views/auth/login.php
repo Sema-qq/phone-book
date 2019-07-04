@@ -1,7 +1,7 @@
 <?php
+/**
+ * @var \system\core\Controller $this
+ */
+?>
 
-use extensions\Helper;
-
-Helper::dump('123');
-
-Helper::dump($test);
+<h1>Авторизация</h1>
