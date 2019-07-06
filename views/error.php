@@ -3,4 +3,4 @@
  * @var \system\core\Controller $this
  */
 
-\extensions\Helper::getImage('404.jpg');
+\extensions\HtmlHelper::getImage('404.jpg');

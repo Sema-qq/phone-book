@@ -1,7 +1,9 @@
 <?php
 /**
- * @var \components\Controller $this
+ * @var system\core\Controller $this
  */
+
+use system\core\Application;
 ?>
 <!DOCTYPE html>
 <html lang="ru-RU">
@@ -15,15 +17,15 @@
 <body>
 <div class="wrap">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <a class="navbar-brand" href="#">Телефонная книга</a>
+        <a class="navbar-brand" href="/">Телефонная книга</a>
         <button
-                class="navbar-toggler"
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbarsExampleDefault"
-                aria-controls="navbarsExampleDefault"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
         >
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -34,18 +36,22 @@
                     <a class="nav-link" href="/contact/index">Контакты</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/contact/login">Войти</a>
+                    <?php if (Application::$components->session->isGuest()): ?>
+                        <a class="nav-link" href="/auth/login">Войти</a>
+                    <?php else: ?>
+                        <a class="nav-link" href="/auth/logout">
+                            Выйти(<?= Application::$components->user->NAME ?>)
+                        </a>
+                    <?php endif; ?>
                 </li>
             </ul>
         </div>
     </nav>
 
     <main role="main" class="container">
-
         <div class="starter-template">
             <?= $this->getContent() ?>
         </div>
-
     </main>
 </div>
 <footer>

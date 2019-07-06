@@ -8,7 +8,7 @@ namespace system\core;
 class Application
 {
     /** @var object компоненты приложения */
-    public static $app;
+    public static $components;
     /** @var array Массив конфигурации приложения */
     private $config;
 
@@ -16,12 +16,14 @@ class Application
      * Стартует приложение
      * @param array $config Конфигурация приложения
      */
-    public function start($config)
+    public static function start($config)
     {
         session_start();
 
-        $this->config = $config;
-        $this->setApp();
+        $app = new self;
+
+        $app->config = $config;
+        $app->setApp();
 
         $router = new Router();
         $router->run();
@@ -39,7 +41,7 @@ class Application
 
         $components = $this->getComponents();
 
-        self::$app = (object) array_merge($array, $components);
+        self::$components = (object) array_merge($array, $components);
     }
 
     /**
@@ -64,6 +66,22 @@ class Application
             }
         }
 
+        $this->prepareUser($components);
+
         return $components;
+    }
+
+    /**
+     * Если пользователь авторизован, то заполним его в компонентах
+     * @param $components
+     */
+    private function prepareUser(&$components)
+    {
+        if (isset($components['user'])) {
+            $sessionUser = isset($_SESSION['user']) ? $_SESSION['user'] : null;
+            if ($sessionUser) {
+                $components['user'] = $sessionUser;
+            }
+        }
     }
 }

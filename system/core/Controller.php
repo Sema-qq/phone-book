@@ -82,6 +82,26 @@ class Controller
     }
 
     /**
+     * Подключает css файл
+     * @param string $templatePath путь до файла
+     * @return string
+     */
+    protected function registerCssFile($templatePath)
+    {
+        return "<link href='{$templatePath}' rel='stylesheet'>";
+    }
+
+    /**
+     * Подключает js файл
+     * @param string $templatePath путь до файла
+     * @return string
+     */
+    protected function registerJsFile($templatePath)
+    {
+        return "<script src='{$templatePath}' type='text/javascript'></script>";
+    }
+
+    /**
      * Отрисовывает представление
      * @return mixed
      */

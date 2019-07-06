@@ -32,7 +32,7 @@ abstract class DbModel extends Model
     abstract public function getTable();
 
     /**
-     *
+     * Возвращает primary key таблицы
      * @return string
      */
     abstract function primaryKey();

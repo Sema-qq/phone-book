@@ -4,6 +4,8 @@
 namespace controllers;
 
 
+use models\LoginForm;
+use system\core\Application;
 use system\core\Controller;
 
 /**
@@ -19,7 +21,11 @@ class AuthController extends Controller
      */
     public function actionLogin()
     {
-        $this->render('login', ['test' => 1]);
+        $model = new LoginForm();
+        
+        if (Application::$components->session->isPost())
+        
+        $this->render('login', compact('model'));
     }
 
     /**

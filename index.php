@@ -13,9 +13,7 @@ try {
     $config = require ROOT . 'config/config.php';
 
     Autoloader::register();
-
-    $app = new Application();
-    $app->start($config);
+    Application::start($config);
 } catch (Exception $e) {
     dump($e->getMessage());
     dump($e->getTrace());
