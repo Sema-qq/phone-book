@@ -5,7 +5,7 @@ namespace system\core;
 /**
  * Ядро приложения
  */
-class Application
+class App
 {
     /** @var object компоненты приложения */
     public static $components;

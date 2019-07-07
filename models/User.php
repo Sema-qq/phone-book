@@ -11,19 +11,26 @@ use system\instruments\DbModel;
  */
 class User extends DbModel
 {
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     public function getTable()
     {
         return 'users';
     }
 
-    /**
-     * @inheritdoc
-     */
+    /** @inheritdoc */
     function primaryKey()
     {
         return 'ID';
+    }
+
+    /** @inheritdoc */
+    public function fields()
+    {
+        return [
+            'ID',
+            'NAME',
+            'LOGIN',
+            'PASSWORD'
+        ];
     }
 }

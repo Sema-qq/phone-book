@@ -26,7 +26,8 @@ class Db
             self::$db = new PDO(
                 $params['dsn'],
                 $params['user'],
-                $params['password']
+                $params['password'],
+                [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"]
             );
         }
 

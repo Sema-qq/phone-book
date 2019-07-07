@@ -15,7 +15,8 @@ class Controller
 
     /** @var string Дефолтный экшн */
     public $defaultAction = 'index';
-
+    /** @var bool Признак подключения лейаута */
+    public $withLayout = true;
     /** @var string Дефолтный лейаут */
     protected $layout = 'main';
 
@@ -23,6 +24,13 @@ class Controller
     private $view;
     /** @var array Данные для представления */
     private $data;
+    
+    public function __construct()
+    {
+        if ($withLayout = App::$components->request->get('withLayout')) {
+            $this->withLayout = $withLayout;
+        }
+    }
 
     /**
      * Возвращает 404
@@ -43,7 +51,7 @@ class Controller
     {
         $this->view = $view;
         $this->data = $data;
-        return $this->getLayout();
+        return $this->withLayout ? $this->getLayout() : $this->getContent();
     }
 
     /**

@@ -3,7 +3,7 @@
  * @var system\core\Controller $this
  */
 
-use system\core\Application;
+use system\core\App;
 ?>
 <!DOCTYPE html>
 <html lang="ru-RU">
@@ -36,11 +36,11 @@ use system\core\Application;
                     <a class="nav-link" href="/contact/index">Контакты</a>
                 </li>
                 <li class="nav-item">
-                    <?php if (Application::$components->session->isGuest()): ?>
+                    <?php if (App::$components->session->isGuest()): ?>
                         <a class="nav-link" href="/auth/login">Войти</a>
                     <?php else: ?>
                         <a class="nav-link" href="/auth/logout">
-                            Выйти(<?= Application::$components->user->NAME ?>)
+                            Выйти(<?= App::$components->user->NAME ?>)
                         </a>
                     <?php endif; ?>
                 </li>

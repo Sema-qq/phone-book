@@ -1,9 +1,13 @@
 <?php
 
-use system\core\Application;
+use system\core\App;
 use system\core\Autoloader;
 
 try {
+    ini_set('display_errors', 1);
+
+    error_reporting(E_ALL);
+
     define('ROOT', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
     require_once(ROOT . 'system/core/Autoloader.php');
@@ -13,7 +17,7 @@ try {
     $config = require ROOT . 'config/config.php';
 
     Autoloader::register();
-    Application::start($config);
+    App::start($config);
 } catch (Exception $e) {
     dump($e->getMessage());
     dump($e->getTrace());

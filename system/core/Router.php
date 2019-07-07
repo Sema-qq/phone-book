@@ -6,7 +6,7 @@ namespace system\core;
 /**
  * Маршрутизатор
  */
-class Router
+class Router extends BaseObject
 {
     /** @var array Массив с маршрутами */
     private $routes;

@@ -4,23 +4,16 @@
 namespace system\core;
 
 
-class Session
+class Session extends BaseObject
 {
-    private $session;
-
-    public function __construct()
-    {
-        $this->session = &$_SESSION;
-    }
-
     public function get($key)
     {
-        return isset($this->session[$key]) ? $this->session[$key] : null;
+        return isset($_SESSION[$key]) ? $_SESSION[$key] : null;
     }
 
     public function set($key, $value)
     {
-        $this->session[$key] = $value;
+        $_SESSION[$key] = $value;
     }
     
     public function isGuest()
@@ -35,8 +28,8 @@ class Session
 
     public function logout()
     {
-        if (isset($this->session['user'])) {
-            unset($this->session['user']);
+        if (isset($_SESSION['user'])) {
+            unset($_SESSION['user']);
         }
     }
 }

@@ -5,7 +5,9 @@ namespace controllers;
 
 
 use models\LoginForm;
-use system\core\Application;
+use models\SignupForm;
+use models\User;
+use system\core\App;
 use system\core\Controller;
 
 /**
@@ -23,9 +25,14 @@ class AuthController extends Controller
     {
         $model = new LoginForm();
         
-        if (Application::$components->session->isPost())
+        if (App::$components->request->isPost()) {
+            $model->load(App::$components->request->post);
+            if ($model->validate()) {
+                return $this->redirect('/');
+            }
+        }
         
-        $this->render('login', compact('model'));
+        return $this->render('login', compact('model'));
     }
 
     /**
@@ -33,7 +40,16 @@ class AuthController extends Controller
      */
     public function actionSignup()
     {
-        $this->render('signup', ['test' => 1]);
+        $model = new SignupForm();
+
+        if (App::$components->request->isPost()) {
+            $model->load(App::$components->request->post);
+            if ($model->save()) {
+                return $this->redirect('/');
+            }
+        }
+
+        return $this->render('signup', compact('model'));
     }
 
     /**
@@ -41,6 +57,7 @@ class AuthController extends Controller
      */
     public function actionLogout()
     {
-        # разлогиниваем пользователя
+        App::$components->session->logout();
+        return $this->redirect('/');
     }
 }
