@@ -15,6 +15,11 @@ class Session extends BaseObject
     {
         $_SESSION[$key] = $value;
     }
+
+    public function getUser()
+    {
+        return $this->get('user');
+    }
     
     public function isGuest()
     {

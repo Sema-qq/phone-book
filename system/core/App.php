@@ -10,7 +10,7 @@ class App
     /** @var object компоненты приложения */
     public static $components;
     /** @var array Массив конфигурации приложения */
-    private $config;
+    private $_config;
 
     /**
      * Стартует приложение
@@ -22,7 +22,7 @@ class App
 
         $app = new self;
 
-        $app->config = $config;
+        $app->_config = $config;
         $app->setApp();
 
         $router = new Router();
@@ -52,8 +52,8 @@ class App
     {
         $components = [];
 
-        if (!empty($this->config['components'])) {
-            foreach ((array) $this->config['components'] as $componentName => $params) {
+        if (!empty($this->_config['components'])) {
+            foreach ((array) $this->_config['components'] as $componentName => $params) {
                 $class = !is_array($params) ? new $params() : null;
                 if (!$class) {
                     $className = array_shift($params);
@@ -83,5 +83,9 @@ class App
                 $components['user'] = $sessionUser;
             }
         }
+
+//        if (isset(self::$components->user) && !self::$components->session->isGuest()) {
+//            self::$components->user = self::$components->session->get('user');
+//        }
     }
 }

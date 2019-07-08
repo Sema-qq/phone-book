@@ -7,7 +7,7 @@ namespace system\core;
 class Model extends BaseObject
 {
     /** @var array Массив ошибок */
-    private $errors = [];
+    private $_errors = [];
 
     /** @inheritdoc */
     public function __construct(array $properties = [])
@@ -29,7 +29,10 @@ class Model extends BaseObject
      */
     public function validateRules()
     {
-        return [];
+        return [
+//            [['login'], 'validateLogin'],
+//            [['password'], 'validatePassword']
+        ];
     }
 
     /**
@@ -39,23 +42,16 @@ class Model extends BaseObject
     public function validate()
     {
         foreach ((array)$this->validateRules() as $validateRow) {
-            foreach ((array)$validateRow as $attributes => $validateMethod) {
-                foreach ((array)$attributes as $attribute) {
-                    if (!isset($this->$attribute)) {
-                        $this->addError('ALL', "Не найдено свойство \"{$attribute}\" в классе.");
-                        return false;
-                    } elseif (!method_exists($this, $validateMethod)) {
-                        $class = get_class($this);
-                        $this->addError('ALL', "Не найден валидатор \"{$validateMethod}\" в \"{$class}\".");
-                        return false;
-                    } elseif (!$this->$validateMethod($attribute)) {
-                        # устанавливать текст ошибки будет в методах
-                        return false;
-                    }
-                }
+            # todo: рассмотреть варианты, когда правила валидации заполнены не правильны
+            $attributes = array_shift($validateRow);
+            $validateMethod = array_shift($validateRow);
+
+            foreach ((array)$attributes as $attribute) {
+                $this->$validateMethod($attribute);
             }
         }
-        return true;
+
+        return (bool)$this->getErrors();
     }
 
     /**
@@ -65,7 +61,7 @@ class Model extends BaseObject
     public function load($array)
     {
         foreach ((array)$array as $attribute => $value) {
-            if (isset($this->$attribute)) {
+            if (property_exists($this, $attribute)) {
                 $this->$attribute = $value;
             }
         }
@@ -78,7 +74,7 @@ class Model extends BaseObject
      */
     public function addError($attribute, $message)
     {
-        $this->errors[$attribute] = $message;
+        $this->_errors[$attribute] = $message;
     }
 
     /**
@@ -88,7 +84,7 @@ class Model extends BaseObject
      */
     public function getError($attribute)
     {
-        return isset($this->errors[$attribute]) ? $this->errors[$attribute] : null;
+        return isset($this->_errors[$attribute]) ? $this->_errors[$attribute] : null;
     }
 
     /**
@@ -97,6 +93,6 @@ class Model extends BaseObject
      */
     public function getErrors()
     {
-        return $this->errors;
+        return $this->_errors;
     }
 }

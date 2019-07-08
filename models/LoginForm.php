@@ -10,18 +10,18 @@ class LoginForm extends FormModel
 {
     /** @var string Логин пользователя */
     public $login;
-    /** @var string Пароль пользователя*/
+    /** @var string Пароль пользователя */
     public $password;
-    /** @var string Повтор пароля пользователя*/
-    public $rePassword;
-    
+
+    /** @var bool|User Пользователь */
+    private $_user = false;
+
     /** @inheritdoc */
     public function attributeLabels()
     {
         return [
             'login' => 'Логин',
-            'password' => 'Пароль',
-            'rePassword' => 'Повтор пароля'
+            'password' => 'Пароль'
         ];
     }
 
@@ -30,23 +30,37 @@ class LoginForm extends FormModel
     {
         return [
             [['login'], 'validateLogin'],
-            [['password'], 'validatePassword'],
-            [['rePassword'], 'validateRePassword']
+            [['password'], 'validatePassword']
         ];
     }
 
     public function validateLogin($attribute)
     {
-
+        if (!$this->$attribute) {
+            $this->addError($attribute, "Поле \"{$this->getAttributeLabel($attribute)}\" не заполнено.");
+        } elseif (!$this->getUser()) {
+            $this->addError($attribute, "Пользователь с логином \"{$this->$attribute}\" не найден.");
+        }
     }
 
     public function validatePassword($attribute)
     {
-
+        if (!$this->$attribute) {
+            $this->addError($attribute, "Поле \"{$this->getAttributeLabel($attribute)}\" не заполнено.");
+        } elseif (!$this->_user->validatePassword($this->$attribute)) {
+            $this->addError($attribute, "Поле \"{$this->getAttributeLabel($attribute)}\" заполнено не верно.");
+        }
     }
 
-    public function validateRePassword($attribute)
+    /**
+     * @return User
+     */
+    public function getUser()
     {
+        if ($this->_user === false) {
+            $this->_user = User::findByLogin($this->login);
+        }
 
+        return $this->_user;
     }
 }

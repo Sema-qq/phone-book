@@ -6,17 +6,17 @@ namespace system\core;
 /**
  * Маршрутизатор
  */
-class Router extends BaseObject
+class Router
 {
     /** @var array Массив с маршрутами */
-    private $routes;
+    private $_routes;
 
     /**
      * Router constructor.
      */
     public function __construct()
     {
-        $this->routes = require ROOT . 'config/routes.php';
+        $this->_routes = require ROOT . 'config/routes.php';
     }
 
     /**
@@ -27,7 +27,7 @@ class Router extends BaseObject
         $uri = $this->getUri();
 
         # сначала перебираем роуты
-        foreach ($this->routes as $uriPattern => $path) {
+        foreach ($this->_routes as $uriPattern => $path) {
             # проверяем наличие такого запроса в маршрутах
             if (preg_match("~{$uriPattern}~", '/')) {
                 # получаем внутренний путь из внешнего согласно правилу

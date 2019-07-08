@@ -21,9 +21,9 @@ class Controller
     protected $layout = 'main';
 
     /** @var string Представление */
-    private $view;
+    private $_view;
     /** @var array Данные для представления */
-    private $data;
+    private $_data;
     
     public function __construct()
     {
@@ -49,8 +49,8 @@ class Controller
      */
     protected function render($view, $data = [])
     {
-        $this->view = $view;
-        $this->data = $data;
+        $this->_view = $view;
+        $this->_data = $data;
         return $this->withLayout ? $this->getLayout() : $this->getContent();
     }
 
@@ -62,8 +62,8 @@ class Controller
      */
     protected function renderPartial($view, $data)
     {
-        $this->view = $view;
-        $this->data = $data;
+        $this->_view = $view;
+        $this->_data = $data;
         return $this->getContent();
     }
 
@@ -115,9 +115,9 @@ class Controller
      */
     private function getView()
     {
-        extract($this->data);
+        extract($this->_data);
 
-        return require $this->getViewFolder() . "/{$this->view}.php";
+        return require $this->getViewFolder() . "/{$this->_view}.php";
     }
 
     /**

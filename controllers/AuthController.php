@@ -28,8 +28,10 @@ class AuthController extends Controller
         if (App::$components->request->isPost()) {
             $model->load(App::$components->request->post);
             if ($model->validate()) {
+                App::$components->session->login($model->getUser());
                 return $this->redirect('/');
             }
+            dd($model);
         }
         
         return $this->render('login', compact('model'));

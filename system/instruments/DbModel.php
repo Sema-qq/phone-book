@@ -13,21 +13,12 @@ use system\core\Model;
  */
 abstract class DbModel extends Model
 {
-    /** @var PDO Соединение с базой */
-    private $db;
     /** @var string Запрос в базу */
-    private $query;
+    private $_query;
     /** @var array Условия запроса */
-    private $where = [];
+    private $_where = [];
     /** @var array Условия сортировки */
-    private $sort;
-
-    /** @inheritdoc */
-    public function __construct(array $properties = [])
-    {
-        $this->db = self::getDb();
-        parent::__construct($properties);
-    }
+    private $_sort;
 
     /**
      * Возвращает название таблицы
@@ -56,19 +47,19 @@ abstract class DbModel extends Model
         return Db::getConnection();
     }
 
-    public static function query()
+    public static function find()
     {
         return new static();
     }
 
     public static function findAll()
     {
-        return self::query()->find()->all();
+        return self::find()->all();
     }
 
     public static function findOne($pk)
     {
-        return self::query()->find()->one($pk);
+        return self::find()->one($pk);
     }
 
     public function save($validate = true)
@@ -82,17 +73,7 @@ abstract class DbModel extends Model
 
     public function delete()
     {
-        // удаление, если будет время
-    }
-
-    /**
-     * Устанавливает начало запроса
-     * @return $this
-     */
-    public function find()
-    {
-        $this->query = "SELECT * FROM {$this->getTable()} ";
-        return $this;
+        // удаление, если понадобится или будет время
     }
 
     /**
@@ -102,23 +83,23 @@ abstract class DbModel extends Model
      */
     public function where(array $where)
     {
-        $this->where = $where;
+        $this->_where = $where;
         return $this;
     }
 
     /**
      * Возвращает одну запись
      * @param int|null $pk primaryKey
-     * @return bool|DbModel
+     * @return null|DbModel
      */
     public function one($pk = null)
     {
         if ($pk) {
-            $this->where = [$this->primaryKey() => $pk];
+            $this->_where = [$this->primaryKey() => $pk];
         }
 
         $statement = $this->execute();
-        return $statement ? $statement->fetchObject(get_class($this)) : false;
+        return $statement ? $statement->fetchObject(get_class($this)) : null;
     }
 
     /**
@@ -137,7 +118,7 @@ abstract class DbModel extends Model
      */
     public function sort(array $sort)
     {
-        $this->sort = $sort;
+        $this->_sort = $sort;
     }
 
     /**
@@ -145,21 +126,23 @@ abstract class DbModel extends Model
      */
     private function prepareQuery()
     {
-        if ($this->where) {
-            $this->query .= ' WHERE ';
+        $this->_query = "SELECT * FROM {$this->getTable()} ";
+
+        if ($this->_where) {
+            $this->_query .= ' WHERE ';
         }
 
-        foreach (array_keys($this->where) as $key => $name) {
-            if ($key !== 0 && $key !== (count($this->where))) {
-                $this->query .= ' AND ';
+        foreach (array_keys($this->_where) as $key => $name) {
+            if ($key !== 0 && $key !== (count($this->_where))) {
+                $this->_query .= ' AND ';
             }
-            $this->query .= "{$name} = :$name";
+            $this->_query .= "{$name} = :$name";
         }
 
-        if ($this->sort) {
-            $this->query .= ' ORDER BY ';
-            foreach ($this->sort as $field => $order) {
-                $this->query .= "{$field} $order";
+        if ($this->_sort) {
+            $this->_query .= ' ORDER BY ';
+            foreach ($this->_sort as $field => $order) {
+                $this->_query .= "{$field} $order";
             }
         }
     }
@@ -172,14 +155,15 @@ abstract class DbModel extends Model
     {
         $fields = $this->fields();
 
-        $insertFields = implode(', ', $fields);
+        $columns = implode(', ', $fields);
 
-        $insertValues = ':' . implode(', :', $fields);
+        $values = ':' . implode(', :', $fields);
 
-        $this->query = "INSERT INTO {$this->getTable()} ({$insertFields}) VALUES ({$insertValues})";
+        $this->_query = "INSERT INTO {$this->getTable()} ({$columns}) VALUES ({$values})";
 
         if ($this->execute($fields)) {
-            $this->{$this->primaryKey()} = $this->db->lastInsertId();
+
+            $this->{$this->primaryKey()} = self::getDb()->lastInsertId();
             return true;
         }
 
@@ -188,7 +172,7 @@ abstract class DbModel extends Model
 
     /**
      * Обновляет запись
-     * @return bool|PDOStatement
+     * @return bool
      */
     private function update()
     {
@@ -198,13 +182,13 @@ abstract class DbModel extends Model
             $update[] = "{$field} = :{$field}";
         }
 
-        $updateFields = implode(', ', $update);
+        $values = implode(', ', $update);
 
         $pk = $this->primaryKey();
 
-        $this->query = "UPDATE {$this->getTable()} SET {$updateFields} WHERE {$pk} = :{$pk}";
+        $this->_query = "UPDATE {$this->getTable()} SET {$values} WHERE {$pk} = :{$pk}";
 
-        return $this->execute(array_merge($this->fields(), [$pk]));
+        return (bool)$this->execute(array_merge($this->fields(), [$pk]));
     }
 
     /**
@@ -219,9 +203,9 @@ abstract class DbModel extends Model
     {
         $this->prepareQuery();
 
-        $statement = $this->db->prepare($this->query);
+        $statement = self::getDb()->prepare($this->_query);
 
-        foreach ($this->where as $name => $value) {
+        foreach ($this->_where as $name => $value) {
             $statement->bindValue(":$name", $value);
         }
 
@@ -230,7 +214,7 @@ abstract class DbModel extends Model
         }
 
         if (!$statement->execute()) {
-            $this->addError('ALL', $statement->errorInfo());
+            $this->addError('ALL', implode('. ', $statement->errorInfo()));
             return false;
         }
 
