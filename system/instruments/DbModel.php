@@ -68,7 +68,7 @@ abstract class DbModel extends Model
             return false;
         }
 
-        return $this->primaryKey() ? $this->update() : $this->insert();
+        return $this->{$this->primaryKey()} ? $this->update() : $this->insert();
     }
 
     public function delete()
@@ -126,7 +126,9 @@ abstract class DbModel extends Model
      */
     private function prepareQuery()
     {
-        $this->_query = "SELECT * FROM {$this->getTable()} ";
+        if (!$this->_query) {
+            $this->_query = "SELECT * FROM {$this->getTable()} ";
+        }
 
         if ($this->_where) {
             $this->_query .= ' WHERE ';
@@ -162,7 +164,6 @@ abstract class DbModel extends Model
         $this->_query = "INSERT INTO {$this->getTable()} ({$columns}) VALUES ({$values})";
 
         if ($this->execute($fields)) {
-
             $this->{$this->primaryKey()} = self::getDb()->lastInsertId();
             return true;
         }

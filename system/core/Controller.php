@@ -3,11 +3,15 @@
 
 namespace system\core;
 
+use models\traits\AccessAction;
+
 /**
  * Базовый класс контроллер
  */
 class Controller
 {
+    use AccessAction;
+
     /** @var string Путь к представлениям */
     const VIEW_FOLDER = ROOT . 'views/';
     /** @var string Путь к лейаутам */
@@ -15,6 +19,10 @@ class Controller
 
     /** @var string Дефолтный экшн */
     public $defaultAction = 'index';
+    /** @var array Экшны на которые можно только авторизованныем пользователям */
+    public $authAction = [];
+    /** @var array Экшны на которые можно только гостям */
+    public $guestAction = [];
     /** @var bool Признак подключения лейаута */
     public $withLayout = true;
     /** @var string Дефолтный лейаут */
@@ -47,8 +55,9 @@ class Controller
      * @param array $data данные, для передачи в представление
      * @return mixed
      */
-    protected function render($view, $data = [])
+    public function render($view, $data = [])
     {
+        $this->checkAction($view);
         $this->_view = $view;
         $this->_data = $data;
         return $this->withLayout ? $this->getLayout() : $this->getContent();
@@ -60,8 +69,9 @@ class Controller
      * @param array $data данные, для передачи в представление
      * @return false|string
      */
-    protected function renderPartial($view, $data)
+    public function renderPartial($view, $data)
     {
+        $this->checkAction($view);
         $this->_view = $view;
         $this->_data = $data;
         return $this->getContent();
@@ -71,8 +81,9 @@ class Controller
      * Перенаправляет на указанный экшн
      * @param string $view маршрут, куда перенаправлять
      */
-    protected function redirect($view)
+    public function redirect($view)
     {
+        $this->checkAction($view);
         return header("Location: {$view}");
     }
 

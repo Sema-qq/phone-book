@@ -4,10 +4,13 @@
 namespace models;
 
 
+use models\traits\validators\LoginValidate;
 use system\instruments\FormModel;
 
 class LoginForm extends FormModel
 {
+    use LoginValidate;
+
     /** @var string Логин пользователя */
     public $login;
     /** @var string Пароль пользователя */
@@ -29,27 +32,10 @@ class LoginForm extends FormModel
     public function validateRules()
     {
         return [
+            [['login', 'password'], 'validateRequired'],
             [['login'], 'validateLogin'],
             [['password'], 'validatePassword']
         ];
-    }
-
-    public function validateLogin($attribute)
-    {
-        if (!$this->$attribute) {
-            $this->addError($attribute, "Поле \"{$this->getAttributeLabel($attribute)}\" не заполнено.");
-        } elseif (!$this->getUser()) {
-            $this->addError($attribute, "Пользователь с логином \"{$this->$attribute}\" не найден.");
-        }
-    }
-
-    public function validatePassword($attribute)
-    {
-        if (!$this->$attribute) {
-            $this->addError($attribute, "Поле \"{$this->getAttributeLabel($attribute)}\" не заполнено.");
-        } elseif (!$this->_user->validatePassword($this->$attribute)) {
-            $this->addError($attribute, "Поле \"{$this->getAttributeLabel($attribute)}\" заполнено не верно.");
-        }
     }
 
     /**

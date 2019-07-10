@@ -6,7 +6,6 @@ namespace controllers;
 
 use models\LoginForm;
 use models\SignupForm;
-use models\User;
 use system\core\App;
 use system\core\Controller;
 
@@ -15,8 +14,9 @@ use system\core\Controller;
  */
 class AuthController extends Controller
 {
-    /** @var string Дефолтный экшн */
     public $defaultAction = 'login';
+    public $authAction = ['logout'];
+    public $guestAction = ['login', 'signup'];
 
     /**
      * Авторизация
@@ -31,7 +31,6 @@ class AuthController extends Controller
                 App::$components->session->login($model->getUser());
                 return $this->redirect('/');
             }
-            dd($model);
         }
         
         return $this->render('login', compact('model'));
@@ -47,6 +46,7 @@ class AuthController extends Controller
         if (App::$components->request->isPost()) {
             $model->load(App::$components->request->post);
             if ($model->save()) {
+                App::$components->session->login($model->getUser());
                 return $this->redirect('/');
             }
         }

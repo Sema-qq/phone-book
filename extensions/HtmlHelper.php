@@ -54,7 +54,7 @@ class HtmlHelper
         $placeholder = isset($htmlOptions['placeholder']) ? $htmlOptions['placeholder'] : $label;
 
         if (isset($htmlOptions['required']) && $htmlOptions['required'] == true) {
-            $label .= "<span class='required'>*</span>";
+            $label .= "<span class='required'> *</span>";
         }
 
         $htmlOptions = array_merge($htmlOptions, [
@@ -64,13 +64,13 @@ class HtmlHelper
         ]);
 
         $content = "<label for='{$attribute}' class='form'>$label</label>";
-        $content .= "<input ";
+        $content .= "<input value='{$model->$attribute}'";
 
         foreach ($htmlOptions as $attr => $value) {
             $content .= "{$attr}='{$value}' ";
         }
         $content .= ">";
-        $content .= "<small id='{$attribute}' class='form-text text-muted'></small>";
+        $content .= "<small id='{$attribute}' class='form-text text-error'>{$model->getError($attribute)}</small>";
         echo $content;
     }
 }

@@ -3,6 +3,7 @@
 
 namespace system\instruments;
 
+use models\traits\BaseValidators;
 use system\core\Model;
 
 /**
@@ -10,6 +11,8 @@ use system\core\Model;
  */
 abstract class FormModel extends Model
 {
+    use BaseValidators;
+
     /**
      * Возвращает ассоциативный массив соответствий,
      * где ключ это имя свойства дочернего класса,

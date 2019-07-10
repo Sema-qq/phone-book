@@ -51,7 +51,7 @@ class Model extends BaseObject
             }
         }
 
-        return (bool)$this->getErrors();
+        return (bool)!$this->getErrors();
     }
 
     /**

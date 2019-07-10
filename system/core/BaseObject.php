@@ -16,9 +16,7 @@ class BaseObject
 
     public function __get($name)
     {
-        if (property_exists($this, $name)) {
-            return $this->$name;
-        } elseif (method_exists($this, $name)) {
+        if (method_exists($this, $name)) {
             return $this->$name();
         } elseif (method_exists($this, 'get' . ucfirst($name))) {
             $method = 'get' . ucfirst($name);
@@ -30,19 +28,11 @@ class BaseObject
 
     public function __set($name, $value)
     {
-        if (property_exists($this, $name)) {
-            $this->$name = $value;
-        }
-
         throw new \Exception("Не найдено свойство {$this->getClass()}::\${$name}");
     }
 
     public function __call($name, $arguments)
     {
-        if (method_exists($this, $name)) {
-            return $this->$name($arguments);
-        }
-
         $method = 'get' . ucfirst($name);
         if (method_exists($this, $method)) {
             return $this->$method($arguments);

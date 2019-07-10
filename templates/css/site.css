@@ -14,3 +14,7 @@ label.form {
 span.required {
     color: red;
 }
+
+small.text-error {
+    color: #ff0000ba;
+}

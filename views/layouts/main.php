@@ -35,15 +35,20 @@ use system\core\App;
                 <li class="nav-item">
                     <a class="nav-link" href="/contact/index">Контакты</a>
                 </li>
-                <li class="nav-item">
-                    <?php if (App::$components->session->isGuest()): ?>
+                <?php if (App::$components->session->isGuest()): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/auth/signup">Зарегистрироваться</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="/auth/login">Войти</a>
-                    <?php else: ?>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item">
                         <a class="nav-link" href="/auth/logout">
                             Выйти(<?= App::$components->user->NAME ?>)
                         </a>
-                    <?php endif; ?>
-                </li>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
     </nav>
