@@ -1,28 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: truehueta
- * Date: 06.07.19
- * Time: 11:54
- */
 
 namespace models;
 
 
-use system\instruments\FormModel;
+use system\core\Model;
 
-class ImageUpload extends FormModel
+/**
+ * Класс для загрузки изображений
+ */
+class ImageUpload extends Model
 {
     public $image;
-
-    /**
-     * Возвращает ассоциативный массив соответствий,
-     * где ключ это имя свойства дочернего класса,
-     * а знаение - его наименование для отображения в форме
-     * @return array
-     */
-    public function attributeLabels()
-    {
-        // TODO: Implement attributeLabels() method.
-    }
 }

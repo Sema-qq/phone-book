@@ -29,7 +29,7 @@ class AuthController extends Controller
             $model->load(App::$components->request->post);
             if ($model->validate()) {
                 App::$components->session->login($model->getUser());
-                return $this->redirect('/');
+                return $this->redirect('/contact');
             }
         }
         

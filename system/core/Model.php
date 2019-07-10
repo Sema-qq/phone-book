@@ -4,8 +4,12 @@
 namespace system\core;
 
 
+use models\traits\BaseValidators;
+
 class Model extends BaseObject
 {
+    use BaseValidators;
+
     /** @var array Массив ошибок */
     private $_errors = [];
 
@@ -65,6 +69,35 @@ class Model extends BaseObject
                 $this->$attribute = $value;
             }
         }
+    }
+
+    /**
+     * Возвращает ассоциативный массив соответствий,
+     * где ключ это имя свойства дочернего класса,
+     * а знаение - его наименование для отображения в форме
+     * @return array
+     */
+    public function attributeLabels()
+    {
+        return [
+//            'name' => 'Имя пользователя'
+        ];
+    }
+
+    /**
+     * Возвращает label атрибута
+     * @param string $attribute Имя атрибута
+     * @return mixed
+     */
+    public function getAttributeLabel($attribute)
+    {
+        $label = $attribute;
+
+        if (isset($this->attributeLabels()[$attribute]) || array_key_exists($attribute, $this->attributeLabels())) {
+            $label = $this->attributeLabels()[$attribute];
+        }
+
+        return $label;
     }
 
     /**

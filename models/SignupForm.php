@@ -5,9 +5,9 @@ namespace models;
 
 
 use models\traits\validators\SignupValidate;
-use system\instruments\FormModel;
+use system\core\Model;
 
-class SignupForm extends FormModel
+class SignupForm extends Model
 {
     use SignupValidate;
 

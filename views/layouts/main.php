@@ -4,6 +4,8 @@
  */
 
 use system\core\App;
+
+$isGuest = App::$components->session->isGuest();
 ?>
 <!DOCTYPE html>
 <html lang="ru-RU">
@@ -17,7 +19,7 @@ use system\core\App;
 <body>
 <div class="wrap">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <a class="navbar-brand" href="/">Телефонная книга</a>
+        <a class="navbar-brand" href="<?= $isGuest ? '/' : '/contact/index' ?>">Телефонная книга</a>
         <button
             class="navbar-toggler"
             type="button"
@@ -32,10 +34,7 @@ use system\core\App;
 
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/contact/index">Контакты</a>
-                </li>
-                <?php if (App::$components->session->isGuest()): ?>
+                <?php if ($isGuest): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="/auth/signup">Зарегистрироваться</a>
                     </li>

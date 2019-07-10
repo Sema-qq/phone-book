@@ -4,7 +4,7 @@
 namespace models;
 
 
-use system\instruments\DbModel;
+use system\core\DbModel;
 
 /**
  * Класс пользователей

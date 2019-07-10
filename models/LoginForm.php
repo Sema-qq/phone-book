@@ -5,9 +5,9 @@ namespace models;
 
 
 use models\traits\validators\LoginValidate;
-use system\instruments\FormModel;
+use system\core\Model;
 
-class LoginForm extends FormModel
+class LoginForm extends Model
 {
     use LoginValidate;
 

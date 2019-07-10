@@ -1,12 +1,10 @@
 <?php
 
 
-namespace system\instruments;
+namespace system\core;
 
 use PDO;
 use PDOStatement;
-use system\core\Db;
-use system\core\Model;
 
 /**
  * Базовый клас модели для работы с базой данных
