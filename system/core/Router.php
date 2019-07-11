@@ -29,7 +29,7 @@ class Router
         # сначала перебираем роуты
         foreach ($this->_routes as $uriPattern => $path) {
             # проверяем наличие такого запроса в маршрутах
-            if (preg_match("~{$uriPattern}~", '/')) {
+            if (preg_match("~{$uriPattern}~", $uri)) {
                 # получаем внутренний путь из внешнего согласно правилу
                 $internalRoute = preg_replace("~{$uriPattern}~", $path, $uri);
                 if ($this->callAction($internalRoute)) {

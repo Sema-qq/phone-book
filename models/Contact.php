@@ -108,4 +108,13 @@ class Contact extends DbModel
     {
         return User::findOne($this->USER_ID);
     }
+
+    public function saveImage($filename)
+    {
+        if ($filename) {
+            $this->PHOTO = $filename;
+            return $this->save(false);
+        }
+        return false;
+    }
 }

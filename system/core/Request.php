@@ -31,4 +31,13 @@ class Request extends BaseObject
     {
         return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/';
     }
+
+    public function files($key = null)
+    {
+        if ($key) {
+            return isset($_FILES[$key]) ? $_FILES[$key] : null;
+        }
+
+        return $_FILES;
+    }
 }

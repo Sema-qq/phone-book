@@ -5,12 +5,13 @@ namespace controllers;
 
 
 use models\Contact;
+use models\ImageUpload;
 use system\core\App;
 use system\core\Controller;
 
 class ContactController extends Controller
 {
-    public $authAction = ['index', 'create', 'update', 'view', 'set-image'. 'delete'];
+    public $authAction = ['index', 'create', 'update', 'view', 'set-image', 'setImage'];
 
     public function actionIndex()
     {
@@ -70,7 +71,21 @@ class ContactController extends Controller
     {
         $model = $this->loadModel($id);
 
-        return $this->render('set-image', compact('model'));
+        $image = new ImageUpload();
+
+        if (App::$components->request->isPost()) {
+            $image->load(App::$components->request->files('image'));
+
+            if ($filename = $image->imageUpload($model->PHOTO)) {
+                if ($model->saveImage($filename)) {
+                    return $this->redirect("/contact/view/{$model->ID}");
+                }
+            }
+
+            dd($filename);
+        }
+
+        return $this->render('set-image', compact('model', 'image'));
     }
 
     /**

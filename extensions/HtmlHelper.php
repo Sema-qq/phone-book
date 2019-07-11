@@ -84,6 +84,18 @@ class HtmlHelper
     }
 
     /**
+     * Возвращает html инпута загрузки файлов
+     * @param Model $model модель
+     * @param string $attribute атрибут
+     * @param array $htmlOptions массив опций
+     */
+    public static function fileInput($model, $attribute, $htmlOptions = [])
+    {
+        $htmlOptions['type'] = 'file';
+        self::input($model, $attribute, $htmlOptions);
+    }
+
+    /**
      * Генерирует html input
      * @param Model $model модель
      * @param string $attribute атрибут
