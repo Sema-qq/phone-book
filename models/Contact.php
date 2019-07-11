@@ -4,6 +4,7 @@
 namespace models;
 
 
+use models\traits\validators\ContactValidate;
 use system\core\DbModel;
 
 /**
@@ -21,6 +22,8 @@ use system\core\DbModel;
  */
 class Contact extends DbModel
 {
+    use ContactValidate;
+
     /** @var int primaryKey */
     public $ID;
     /** @var int fk_users.id */
@@ -39,11 +42,12 @@ class Contact extends DbModel
     /**
      * Возвращает все контакты принадлежащие пользователю
      * @param int $userId Ид пользователя
+     * @param array $sort сортировка
      * @return Contact[]|array
      */
-    public static function getAllContactsByUser($userId)
+    public static function getAllContactsByUser($userId, array $sort = [])
     {
-        return self::find()->where(['USER_ID' => $userId])->all();
+        return self::find()->where(['USER_ID' => $userId])->sort($sort)->all();
     }
 
 
@@ -89,11 +93,10 @@ class Contact extends DbModel
     public function validateRules()
     {
         return [
-            [['PHONE'], 'validateRequired'],
+            [['FIRST_NAME', 'PHONE'], 'validateRequired'],
             [['FIRST_NAME', 'LAST_NAME'], 'validateName'],
             [['PHONE'], 'validatePhone'],
-            [['EMAIL'], 'validateEmail'],
-            [['PHOTO'], 'validatePhoto']
+            [['EMAIL'], 'validateEmail']
         ];
     }
 

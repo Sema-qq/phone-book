@@ -113,10 +113,12 @@ abstract class DbModel extends Model
     /**
      * Добавляет сортировку
      * @param array $sort
+     * @return $this
      */
     public function sort(array $sort)
     {
         $this->_sort = $sort;
+        return $this;
     }
 
     /**

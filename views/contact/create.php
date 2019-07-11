@@ -11,3 +11,4 @@
     </ol>
 </nav>
 <h2>Добавление контакта</h2>
+<?= $this->renderPartial('_form', compact('model')) ?>

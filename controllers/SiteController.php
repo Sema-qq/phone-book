@@ -4,6 +4,7 @@
 namespace controllers;
 
 
+use system\core\App;
 use system\core\Controller;
 
 /**
@@ -16,6 +17,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        if (!App::$components->session->isGuest()) {
+            $this->redirect('/contact/index');
+        }
+
         return $this->render('index');
     }
 }

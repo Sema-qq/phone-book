@@ -16,6 +16,8 @@ class Controller
     const VIEW_FOLDER = ROOT . 'views/';
     /** @var string Путь к лейаутам */
     const LAYOUT_FOLDER = ROOT . 'views/layouts/';
+    /** @var string Путь к шаблонам */
+    const TEMPLATE_FOLDER = ROOT . 'templates/';
 
     /** @var string Дефолтный экшн */
     public $defaultAction = 'index';

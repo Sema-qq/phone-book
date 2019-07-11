@@ -8,6 +8,7 @@ use extensions\HtmlHelper;
 ?>
 <h1>Регистрация</h1>
 <div class="container">
+    <?= HtmlHelper::errors($model, 'ALL') ?>
     <form method="post" id="auth-form">
         <div class="form-group">
             <?= HtmlHelper::textInput($model, 'name', [

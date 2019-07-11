@@ -18,3 +18,7 @@ span.required {
 small.text-error {
     color: #ff0000ba;
 }
+
+table.detail-view {
+    text-align: left;
+}

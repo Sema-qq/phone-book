@@ -3,6 +3,8 @@
  * @var \controllers\ContactController $this
  * @var \models\Contact $model
  */
+
+use extensions\HtmlHelper;
 ?>
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -12,3 +14,17 @@
     </ol>
 </nav>
 <h2>Просмотр контакта <?= $model->FIRST_NAME ?></h2>
+<div class="container">
+    <div class="row">
+        <a class="btn btn-light" role="button" href="/contact/update/<?= $model->ID ?>">Редактировать</a>
+        <a class="btn btn-light" role="button" href="/contact/set-image/<?= $model->ID ?>">Добавить фото</a>
+    </div>
+    <br>
+    <?= HtmlHelper::tableView($model, [
+        'ID',
+        'FIRST_NAME',
+        'LAST_NAME',
+        'PHONE',
+        'EMAIL'
+    ])?>
+</div>
