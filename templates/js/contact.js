@@ -20,8 +20,6 @@ function submitHandler() {
     $('div.starter-template').on('submit', function (e) {
         let $this = $(this),
             $form = $this.find('form').first();
-
-        console.log($form.find('input').is('#image'));
         
         if ($form.find('input').is('#image')) {
             let data = new FormData();
