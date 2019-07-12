@@ -2,6 +2,7 @@
 
 use system\core\App;
 use system\core\Autoloader;
+use system\core\Controller;
 
 try {
     ini_set('display_errors', 1);
@@ -20,6 +21,6 @@ try {
     Autoloader::register();
     App::start($config);
 } catch (Exception $e) {
-    dump($e->getMessage());
-    dump($e->getTrace());
+    $controller = new Controller();
+    $controller->showError($e->getMessage());
 }

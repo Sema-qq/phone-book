@@ -64,4 +64,3 @@ $isGuest = App::$components->session->isGuest();
 </footer>
 </body>
 </html>
-
