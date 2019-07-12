@@ -20,8 +20,18 @@ function submitHandler() {
     $('div.starter-template').on('submit', function (e) {
         let $this = $(this),
             $form = $this.find('form').first();
+
+        console.log($form.find('input').is('#image'));
         
-        $.post($form.attr('action'), $form.serializeArray(), function (response) {
+        if ($form.find('input').is('#image')) {
+            let data = new FormData();
+            data.append('image', document.getElementById("image").files[0]);
+        } else {
+            let data = $form.serializeArray();
+        }
+
+        
+        $.post($form.attr('action'), data, function (response) {
             $('div.starter-template').html(response);
             linkHandler();
             submitHandler();
