@@ -15,6 +15,8 @@ $isGuest = App::$components->session->isGuest();
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="/templates/css/bootstrap.min.css" rel="stylesheet">
     <link href="/templates/css/site.css" rel="stylesheet">
+    <script src="/templates/js/jquery-3.4.1.min.js" type="text/javascript"></script>
+    <script src="/templates/js/bootstrap.min.js" type="text/javascript"></script>
 </head>
 <body>
 <div class="wrap">
@@ -60,8 +62,6 @@ $isGuest = App::$components->session->isGuest();
 </div>
 <footer>
 </footer>
-<script src="/templates/js/jquery-3.4.1.min.js" type="text/javascript"></script>
-<script src="/templates/js/bootstrap.min.js" type="text/javascript"></script>
 </body>
 </html>
 

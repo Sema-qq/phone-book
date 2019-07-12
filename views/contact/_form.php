@@ -10,10 +10,16 @@ use extensions\HtmlHelper;
     <?= HtmlHelper::errors($model, 'ALL') ?>
     <form action="/contact/<?= $model->ID ? 'update/' . $model->ID : 'create' ?>" method="post">
         <div class="form-group">
-            <?= HtmlHelper::textInput($model, 'FIRST_NAME', ['class' => 'form-control']) ?>
+            <?= HtmlHelper::textInput($model, 'FIRST_NAME', [
+                'class' => 'form-control',
+                'maxlength' => 30
+            ]) ?>
         </div>
         <div class="form-group">
-            <?= HtmlHelper::textInput($model, 'LAST_NAME', ['class' => 'form-control']) ?>
+            <?= HtmlHelper::textInput($model, 'LAST_NAME', [
+                'class' => 'form-control',
+                'maxlength' => 30
+            ]) ?>
         </div>
         <div class="form-group">
             <?= HtmlHelper::textInput($model, 'PHONE', [
@@ -22,7 +28,10 @@ use extensions\HtmlHelper;
             ]) ?>
         </div>
         <div class="form-group">
-            <?= HtmlHelper::textInput($model, 'EMAIL', ['class' => 'form-control']) ?>
+            <?= HtmlHelper::textInput($model, 'EMAIL', [
+                'class' => 'form-control',
+                'type' => 'email'
+            ]) ?>
         </div>
         <button type="submit" class="btn btn-primary">Сохранить</button>
     </form>

@@ -95,7 +95,6 @@ class Contact extends DbModel
         return [
             [['FIRST_NAME', 'PHONE'], 'validateRequired'],
             [['FIRST_NAME', 'LAST_NAME'], 'validateName'],
-            [['PHONE'], 'validatePhone'],
             [['EMAIL'], 'validateEmail']
         ];
     }
@@ -116,5 +115,14 @@ class Contact extends DbModel
             return $this->save(false);
         }
         return false;
+    }
+
+    public function getImage()
+    {
+        if ($this->PHOTO && ImageUpload::fileExists($this->PHOTO)) {
+            return "/templates/uploads/{$this->PHOTO}";
+        }
+
+        return  '/templates/img/no-image.png';
     }
 }

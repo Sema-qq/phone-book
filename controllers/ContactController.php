@@ -15,9 +15,14 @@ class ContactController extends Controller
 
     public function actionIndex()
     {
+        $sortAttr = App::$components->request->get('sortAttr');
         $sort = App::$components->request->get('sort');
 
-        $sort = $sort && is_string($sort) && property_exists(Contact::class, $sort) ? [$sort => 'ASC'] : [];
+        if ($sortAttr && $sort && is_string($sort) && in_array($sort, ['ASC', 'DESC']) && property_exists(Contact::class, $sortAttr)) {
+            $sort = [$sortAttr => $sort];
+        } else {
+            $sort = [];
+        }
 
         $contacts = Contact::getAllContactsByUser(App::$components->user->ID, $sort);
 
@@ -81,8 +86,6 @@ class ContactController extends Controller
                     return $this->redirect("/contact/view/{$model->ID}");
                 }
             }
-
-            dd($filename);
         }
 
         return $this->render('set-image', compact('model', 'image'));
@@ -96,10 +99,10 @@ class ContactController extends Controller
      */
     private function loadModel($id)
     {
-        if ($model = Contact::findOne($id)) {
+        if ($model = Contact::find()->where(['USER_ID' => App::$components->user->ID, 'ID' => $id])->one()) {
             return $model;
         }
 
-        throw new \Exception("Контакт №{$id} не найден");
+        return $this->showError('Не удалось найти контакт.', true);
     }
 }

@@ -11,11 +11,21 @@ class HtmlHelper
      * Возвращает картинку
      * @param string $image
      * @param bool $basePath
+     * @param array $htmlOptions
      */
-    public static function getImage($image, $basePath = true)
+    public static function getImage($image, $basePath = true, array $htmlOptions = [])
     {
         $imagePath = $basePath ? "/templates/img/{$image}" : $image;
-        echo "<img src='{$imagePath}'>";
+
+        $options = '';
+
+        foreach ($htmlOptions as $attr => $value) {
+            $options .= "{$attr}='{$value}' ";
+        }
+
+        $content = "<img src='{$imagePath}' {$options}>";
+
+        echo $content;
     }
 
     /**
@@ -159,7 +169,9 @@ class HtmlHelper
 
         foreach ($attributes as $attribute) {
             if (in_array($attribute, $sortAttributes)) {
-                $content .= "<th><a href='/{$url}/index?sort={$attribute}'>{$class->getAttributeLabel($attribute)}</a></th>";
+                $arraySort = ['DESC' => 'ASC', 'ASC' => 'DESC'];
+                $sort = isset($_GET['sort']) && in_array($_GET['sort'], $arraySort) ? $arraySort[$_GET['sort']] : 'ASC';
+                $content .= "<th><a href='/{$url}/index?sortAttr={$attribute}&sort={$sort}'>{$class->getAttributeLabel($attribute)}</a></th>";
             } else {
                 $content .= "<th>{$class->getAttributeLabel($attribute)}</th>";
             }
@@ -172,7 +184,13 @@ class HtmlHelper
             $content .= '<tr>';
 
             foreach ($attributes as $attribute) {
-                $content .= "<td>{$model->$attribute}</td>";
+                # todo костыль, ну а что поделать, время поджимает.
+                if ($attribute == 'PHOTO') {
+                    $image = "<img src='{$model->getImage()}' width='50'>";
+                    $content .= "<td>{$image}</td>";
+                } else {
+                    $content .= "<td>{$model->$attribute}</td>";
+                }
             }
 
             $content .= "<td><a href='/{$url}/view/{$model->{$model->primaryKey()}}' title='Просмотр' aria-label='Просмотр'>&#9787;</a>";

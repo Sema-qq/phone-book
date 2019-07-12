@@ -1,6 +1,10 @@
 <?php
 /**
  * @var \system\core\Controller $this
+ * @var string $message
  */
 
-\extensions\HtmlHelper::getImage('404.jpg');
+use extensions\HtmlHelper;
+?>
+<?= HtmlHelper::alerts('danger', $message); ?>
+<?= HtmlHelper::getImage('404.jpg'); ?>

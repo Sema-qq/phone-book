@@ -29,6 +29,25 @@ class ImageUpload extends Model
     /** @var  SplFileInfo */
     private $_fileInfo;
 
+    /**
+     * Проверяет существование изображения
+     * @param string $image
+     * @return bool
+     */
+    public static function fileExists($image)
+    {
+        return file_exists(self::getFolder() . $image);
+    }
+
+    /**
+     * Возвращает директорию хранения изображений
+     * @return string
+     */
+    public static function getFolder()
+    {
+        return ROOT . 'templates/uploads/';
+    }
+
     /** @inheritdoc */
     public function attributeLabels()
     {
@@ -79,27 +98,8 @@ class ImageUpload extends Model
     private function deleteCurrentImage($currentImage)
     {
         if ($this->fileExists($currentImage)) {
-            unlink($this->getFolder() . $currentImage);
+            unlink(self::getFolder() . $currentImage);
         }
-    }
-
-    /**
-     * Проверяет существование изображения
-     * @param string $image
-     * @return bool
-     */
-    private function fileExists($image)
-    {
-        return file_exists($this->getFolder() . $image);
-    }
-
-    /**
-     * Возвращает директорию хранения изображений
-     * @return string
-     */
-    private function getFolder()
-    {
-        return ROOT . 'templates/uploads/';
     }
 
     /**
@@ -113,13 +113,17 @@ class ImageUpload extends Model
     }
 
     /** 
-     * Сохраняет изображение в папке загрузок 
+     * Сохраняет изображение в папке загрузок
+     * @return string|false
      */
     private function saveImage()
     {
         $filename = $this->generateFilename();
 
-        return copy($this->tmp_name, $filename) && $this->fileExists($filename) ? $filename : false;
-    }
+        if (copy($this->tmp_name, self::getFolder() . $filename) && self::fileExists($filename)) {
+            return $filename;
+        }
 
+        return false;
+    }
 }

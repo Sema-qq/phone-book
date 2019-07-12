@@ -44,11 +44,16 @@ class Controller
 
     /**
      * Возвращает 404
+     * @param string $message
      * @return mixed
      */
-    public function showError()
+    public function showError($message = null, $exit = false)
     {
-        return $this->render('error');
+        $this->render('error', compact('message'));
+
+        if ($exit) {
+            exit();
+        }
     }
 
     /**
@@ -109,7 +114,7 @@ class Controller
      */
     protected function registerCssFile($templatePath)
     {
-        return "<link href='{$templatePath}' rel='stylesheet'>";
+        echo "<link href='{$templatePath}' rel='stylesheet'>";
     }
 
     /**
@@ -119,7 +124,7 @@ class Controller
      */
     protected function registerJsFile($templatePath)
     {
-        return "<script src='{$templatePath}' type='text/javascript'></script>";
+        echo "<script src='{$templatePath}' type='text/javascript'></script>";
     }
 
     /**
@@ -139,7 +144,8 @@ class Controller
      */
     private function getViewFolder()
     {
-        return self::VIEW_FOLDER . $this->getChildClassName();
+        $dir = $this->_view == 'error' ? null : $this->getChildClassName();
+        return self::VIEW_FOLDER . $dir;
     }
 
     /**

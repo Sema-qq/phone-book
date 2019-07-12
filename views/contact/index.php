@@ -1,14 +1,13 @@
 <?php
 /**
  * @var \controllers\ContactController $this
- * @var \models\Contact[] $contacts
+ * @var Contact[] $contacts
  */
 
 use extensions\HtmlHelper;
 use models\Contact;
-use system\core\Controller;
 
-//$this->registerJsFile(Controller::TEMPLATE_FOLDER . 'js/contact.js');
+$this->registerJsFile('/templates/js/contact.js');
 ?>
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -26,7 +25,8 @@ use system\core\Controller;
         'FIRST_NAME',
         'LAST_NAME',
         'PHONE',
-        'EMAIL'
+        'EMAIL',
+        'PHOTO'
     ], [
         'ID',
         'FIRST_NAME',
@@ -35,5 +35,3 @@ use system\core\Controller;
         'EMAIL'
     ], 'contact') ?>
 </div>
-
-
