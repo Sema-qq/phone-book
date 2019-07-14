@@ -81,7 +81,7 @@ class Controller
         $this->checkAction($view);
         $this->_view = $view;
         $this->_data = $data;
-        return $this->getContent();
+        echo $this->getContent();
     }
 
     /**

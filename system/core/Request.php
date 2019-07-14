@@ -11,6 +11,12 @@ class Request extends BaseObject
         return $_SERVER['REQUEST_METHOD'] === 'POST';
     }
 
+    public static function isAjax()
+    {
+        return isset($_SERVER['HTTP_X_REQUESTED_WITH'])
+        && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+    }
+
     public function post($key = null)
     {
         if ($key) {

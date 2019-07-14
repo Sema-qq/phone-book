@@ -5,6 +5,7 @@
  */
 
 use extensions\HtmlHelper;
+use models\Converter;
 ?>
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -27,4 +28,7 @@ use extensions\HtmlHelper;
         'PHONE',
         'EMAIL'
     ])?>
+    <div class="row">
+        <b>Телефон строкой:</b>&#8194;<i><?= Converter::convert($model->PHONE)?></i>
+    </div>
 </div>

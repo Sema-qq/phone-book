@@ -5,6 +5,7 @@ namespace controllers;
 
 
 use models\Contact;
+use models\Converter;
 use models\ImageUpload;
 use system\core\App;
 use system\core\Controller;
@@ -13,12 +14,22 @@ class ContactController extends Controller
 {
     public $authAction = ['index', 'create', 'update', 'view', 'set-image', 'setImage'];
 
+    public function actionTest()
+    {
+        echo Converter::convert(999999999999);
+    }
+
     public function actionIndex()
     {
         $sortAttr = App::$components->request->get('sortAttr');
         $sort = App::$components->request->get('sort');
 
-        if ($sortAttr && $sort && is_string($sort) && in_array($sort, ['ASC', 'DESC']) && property_exists(Contact::class, $sortAttr)) {
+        if ($sortAttr &&
+            $sort &&
+            is_string($sort) &&
+            in_array($sort, ['ASC', 'DESC']) &&
+            property_exists(Contact::class, $sortAttr)
+        ) {
             $sort = [$sortAttr => $sort];
         } else {
             $sort = [];
@@ -26,7 +37,7 @@ class ContactController extends Controller
 
         $contacts = Contact::getAllContactsByUser(App::$components->user->ID, $sort);
 
-        return $this->render('index', compact('contacts'));
+        return $this->callRender('index', compact('contacts'));
     }
 
     public function actionCreate()
@@ -42,7 +53,7 @@ class ContactController extends Controller
             }
         }
 
-        return $this->render('create', compact('model'));
+        return $this->callRender('create', compact('model'));
     }
 
     public function actionUpdate($id)
@@ -57,14 +68,14 @@ class ContactController extends Controller
             }
         }
 
-        return $this->render('update', compact('model'));
+        return $this->callRender('update', compact('model'));
     }
 
     public function actionView($id)
     {
         $model = $this->loadModel($id);
 
-        return $this->render('view', compact('model'));
+        return $this->callRender('view', compact('model'));
     }
 
     public function actionDelete($id)
@@ -88,7 +99,13 @@ class ContactController extends Controller
             }
         }
 
-        return $this->render('set-image', compact('model', 'image'));
+        return $this->callRender('set-image', compact('model', 'image'));
+    }
+
+    private function callRender($view, $data)
+    {
+        return App::$components->request->isAjax() ?
+            $this->renderPartial($view, $data) : $this->render($view, $data);
     }
 
     /**
@@ -99,7 +116,9 @@ class ContactController extends Controller
      */
     private function loadModel($id)
     {
-        if ($model = Contact::find()->where(['USER_ID' => App::$components->user->ID, 'ID' => $id])->one()) {
+        if ($model = Contact::find()
+            ->where(['USER_ID' => App::$components->user->ID, 'ID' => $id])->one()
+        ) {
             return $model;
         }
 

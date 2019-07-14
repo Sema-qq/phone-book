@@ -21,7 +21,7 @@ $isGuest = App::$components->session->isGuest();
 <body>
 <div class="wrap">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <a class="navbar-brand" href="<?= $isGuest ? '/' : '/contact/index' ?>">Телефонная книга</a>
+        <a class="navbar-brand" href="<?= $isGuest ? '/' : '/contact' ?>">Телефонная книга</a>
         <button
             class="navbar-toggler"
             type="button"

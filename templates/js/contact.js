@@ -11,7 +11,6 @@ function linkHandler() {
             submitHandler();
         });
 
-
         return false;
     })
 }
@@ -22,19 +21,26 @@ function submitHandler() {
             $form = $this.find('form').first();
         
         if ($form.find('input').is('#image')) {
-            let data = new FormData();
-            data.append('image', document.getElementById("image").files[0]);
+            var data = new FormData();
+            data.append('image', document.getElementById('image').files[0]);
         } else {
-            let data = $form.serializeArray();
+            var data = $form.serializeArray();
         }
 
-        
-        $.post($form.attr('action'), data, function (response) {
-            $('div.starter-template').html(response);
-            linkHandler();
-            submitHandler();
+        $.ajax({
+            url: $form.attr('action'),
+            type: "POST",
+            data: data,
+            cache: false,
+            processData: false,
+            contentType: false,
+            dataType: "html",
+            success: function (response) {
+                $('div.starter-template').html(response);
+                linkHandler();
+                submitHandler();
+            }
         });
-
 
         e.preventDefault();
         return false;
