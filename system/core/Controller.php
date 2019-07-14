@@ -25,8 +25,6 @@ class Controller
     public $authAction = [];
     /** @var array Экшны на которые можно только гостям */
     public $guestAction = [];
-    /** @var bool Признак подключения лейаута */
-    public $withLayout = true;
     /** @var string Дефолтный лейаут */
     protected $layout = 'main';
 
@@ -34,13 +32,6 @@ class Controller
     private $_view;
     /** @var array Данные для представления */
     private $_data;
-    
-    public function __construct()
-    {
-        if ($withLayout = App::$components->request->get('withLayout')) {
-            $this->withLayout = $withLayout;
-        }
-    }
 
     /**
      * Возвращает 404
@@ -67,7 +58,7 @@ class Controller
         $this->checkAction($view);
         $this->_view = $view;
         $this->_data = $data;
-        return $this->withLayout ? $this->getLayout() : $this->getContent();
+        return $this->getLayout();
     }
 
     /**
