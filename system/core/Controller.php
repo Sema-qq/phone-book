@@ -13,11 +13,9 @@ class Controller
     use AccessAction;
 
     /** @var string Путь к представлениям */
-    const VIEW_FOLDER = '/views/';
+    const VIEW_FOLDER = 'views/';
     /** @var string Путь к лейаутам */
-    const LAYOUT_FOLDER = '/views/layouts/';
-    /** @var string Путь к шаблонам */
-    const TEMPLATE_FOLDER = '/templates/';
+    const LAYOUT_FOLDER = 'views/layouts/';
 
     /** @var string Дефолтный экшн */
     public $defaultAction = 'index';
@@ -136,7 +134,7 @@ class Controller
     private function getViewFolder()
     {
         $dir = $this->_view == 'error' ? null : $this->getChildClassName();
-        return self::VIEW_FOLDER . $dir;
+        return ROOT . self::VIEW_FOLDER . $dir;
     }
 
     /**
@@ -145,7 +143,7 @@ class Controller
      */
     private function getLayout()
     {
-        return require self::LAYOUT_FOLDER . $this->layout . '.php';
+        return require ROOT .self::LAYOUT_FOLDER . $this->layout . '.php';
     }
 
     /**

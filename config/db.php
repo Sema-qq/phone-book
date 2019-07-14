@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'dsn' => 'mysql:host=localhost;dbname=phone-book',
+    'dsn' => 'mysql:host=mariadb;dbname=phone-book',
     'user' => 'root',
-    'password' => ''
+    'password' => 'qazxswe90e'
 ];
