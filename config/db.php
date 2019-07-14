@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'dsn' => getenv('MYSQL_DSN'),
-    'user' => getenv('MYSQL_USER'),
-    'password' => getenv('MYSQL_ROOT_PASSWORD')
+    'dsn' => 'mysql:host=localhost;dbname=phone-book',
+    'user' => 'root',
+    'password' => ''
 ];

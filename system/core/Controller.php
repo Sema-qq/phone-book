@@ -13,11 +13,11 @@ class Controller
     use AccessAction;
 
     /** @var string Путь к представлениям */
-    const VIEW_FOLDER = ROOT . 'views/';
+    const VIEW_FOLDER = '/views/';
     /** @var string Путь к лейаутам */
-    const LAYOUT_FOLDER = ROOT . 'views/layouts/';
+    const LAYOUT_FOLDER = '/views/layouts/';
     /** @var string Путь к шаблонам */
-    const TEMPLATE_FOLDER = ROOT . 'templates/';
+    const TEMPLATE_FOLDER = '/templates/';
 
     /** @var string Дефолтный экшн */
     public $defaultAction = 'index';
