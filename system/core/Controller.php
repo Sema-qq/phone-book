@@ -112,7 +112,7 @@ class Controller
      * @param string $templatePath путь до файла
      * @return string
      */
-    protected function registerCssFile($templatePath)
+    public function registerCssFile($templatePath)
     {
         echo "<link href='{$templatePath}' rel='stylesheet'>";
     }
@@ -122,7 +122,7 @@ class Controller
      * @param string $templatePath путь до файла
      * @return string
      */
-    protected function registerJsFile($templatePath)
+    public function registerJsFile($templatePath)
     {
         echo "<script src='{$templatePath}' type='text/javascript'></script>";
     }

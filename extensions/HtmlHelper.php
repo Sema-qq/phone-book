@@ -29,6 +29,7 @@ class HtmlHelper
     }
 
     /**
+     * Выводит ошибки
      * @param Model $model
      * @param string $attribute
      */
@@ -39,6 +40,11 @@ class HtmlHelper
         }
     }
 
+    /**
+     * Выводит алерт
+     * @param string $class
+     * @param string $message
+     */
     public static function alerts($class, $message)
     {
         echo "<div class='alert alert-{$class}' role='alert'>{$message}</div>";
@@ -127,7 +133,7 @@ class HtmlHelper
             'placeholder' => $placeholder
         ]);
 
-        $content = "<label for='{$attribute}' class='form'>$label</label>";
+        $content = "<label for='{$id}' class='form'>$label</label>";
         $content .= "<input value='{$model->$attribute}'";
 
         foreach ($htmlOptions as $attr => $value) {
@@ -198,6 +204,47 @@ class HtmlHelper
         }
 
         $content .= '</tbody></table></div>';
+
+        echo $content;
+    }
+
+    /**
+     * Возвращает html captcha
+     * @param Model $model модель
+     * @param string $attribute атрибут
+     * @param array $inputOptions массив опций для поля ввода
+     * @param array $captchaOptions массив опций для картинки
+     */
+    public static function captcha($model, $attribute, $inputOptions = [], $captchaOptions = [])
+    {
+        $label = $model->getAttributeLabel($attribute);
+        $id = isset($inputOptions['id']) ? $inputOptions['id'] : $attribute;
+        $placeholder = isset($inputOptions['placeholder']) ? $inputOptions['placeholder'] : $label;
+
+        if (isset($inputOptions['required']) && $inputOptions['required'] == true) {
+            $label .= "<span class='required'> *</span>";
+        }
+
+        $inputOptions = array_merge($inputOptions, [
+            'id' => $id,
+            'name' => $attribute,
+            'placeholder' => $placeholder
+        ]);
+
+        $content = "<label for='{$id}' class='form'>{$label}</label></div>";
+        $content .= "<div class='row form-group'><div class='col'><img";
+
+        foreach ($captchaOptions as $attr => $value) {
+            $content .= " {$attr}='{$value}' ";
+        }
+
+        $content .= "></div><div class='col'><input";
+
+        foreach ($inputOptions as $attr => $value) {
+            $content .= " {$attr}='{$value}' ";
+        }
+
+        $content .= "><small id='{$id}' class='form-text text-error'>{$model->getError($attribute)}</small></div>";
 
         echo $content;
     }

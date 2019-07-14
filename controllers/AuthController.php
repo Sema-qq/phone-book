@@ -4,6 +4,7 @@
 namespace controllers;
 
 
+use extensions\CaptchaHelper;
 use models\LoginForm;
 use models\SignupForm;
 use system\core\App;
@@ -61,5 +62,29 @@ class AuthController extends Controller
     {
         App::$components->session->logout();
         return $this->redirect('/');
+    }
+
+    /**
+     * Капча
+     */
+    public function actionCaptcha()
+    {
+        # генерим код
+        $text = CaptchaHelper::getText();
+        # сохраняем в сессию
+        App::$components->session->set('captcha', $text);
+        # генерим картинку
+        $img = CaptchaHelper::createImage($text, '/templates/fonts/Barriecito-Regular.ttf');
+        # отправляем HTTP заголовки
+        header("Expires: Wed, 1 Jan 1997 00:00:00 GMT");
+        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+        header("Cache-Control: no-store, no-cache, must-revalidate");
+        header("Cache-Control: post-check=0, pre-check=0", false);
+        header("Pragma: no-cache");
+        header("Content-type: image/gif");
+        # выводим изображение в браузер
+        imagegif($img);
+        # Уничтожаем изображение
+        imagedestroy($img);
     }
 }

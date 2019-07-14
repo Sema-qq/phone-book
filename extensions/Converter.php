@@ -1,6 +1,6 @@
 <?php
 
-namespace models;
+namespace extensions;
 
 
 class Converter

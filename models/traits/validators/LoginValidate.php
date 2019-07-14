@@ -4,6 +4,8 @@
 namespace models\traits\validators;
 
 
+use models\User;
+
 trait LoginValidate
 {
     public function validateLogin($attribute)
@@ -15,7 +17,7 @@ trait LoginValidate
 
     public function validatePassword($attribute)
     {
-        if (!$this->_user->validatePassword($this->$attribute)) {
+        if ($this->_user instanceof User && !$this->_user->validatePassword($this->$attribute)) {
             $this->addError($attribute, "Поле \"{$this->getAttributeLabel($attribute)}\" заполнено не верно.");
         }
     }

@@ -14,11 +14,6 @@ class ContactController extends Controller
 {
     public $authAction = ['index', 'create', 'update', 'view', 'set-image', 'setImage'];
 
-    public function actionTest()
-    {
-        echo Converter::convert(999999999999);
-    }
-
     public function actionIndex()
     {
         $sortAttr = App::$components->request->get('sortAttr');

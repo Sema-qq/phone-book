@@ -5,6 +5,7 @@
  */
 use extensions\HtmlHelper;
 
+$this->registerJsFile('/templates/js/captcha.js');
 ?>
 <h1>Авторизация</h1>
 <div class="container">
@@ -21,6 +22,15 @@ use extensions\HtmlHelper;
                 'class' => 'form-control',
                 'required' => true
             ])?>
+        </div>
+        <div class="form-group">
+            <?= HtmlHelper::captcha($model, 'captcha', [
+                'class' => 'form-control',
+                'required' => true
+            ], [
+                'src' => '/auth/captcha',
+                'class' => 'js-captcha-img'
+            ]) ?>
         </div>
         <button type="submit" class="btn btn-primary">Войти</button>
     </form>

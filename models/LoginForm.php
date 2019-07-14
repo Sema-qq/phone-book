@@ -4,17 +4,21 @@
 namespace models;
 
 
+use models\traits\validators\CaptchaValidate;
 use models\traits\validators\LoginValidate;
 use system\core\Model;
 
 class LoginForm extends Model
 {
     use LoginValidate;
+    use CaptchaValidate;
 
     /** @var string Логин пользователя */
     public $login;
     /** @var string Пароль пользователя */
     public $password;
+    /** @var  string Капча */
+    public $captcha;
 
     /** @var bool|User Пользователь */
     private $_user = false;
@@ -24,7 +28,8 @@ class LoginForm extends Model
     {
         return [
             'login' => 'Логин',
-            'password' => 'Пароль'
+            'password' => 'Пароль',
+            'captcha' => 'Введите код с картинки'
         ];
     }
 
@@ -32,9 +37,10 @@ class LoginForm extends Model
     public function validateRules()
     {
         return [
-            [['login', 'password'], 'validateRequired'],
+            [['login', 'password', 'captcha'], 'validateRequired'],
             [['login'], 'validateLogin'],
-            [['password'], 'validatePassword']
+            [['password'], 'validatePassword'],
+            [['captcha'], 'validateCaptcha']
         ];
     }
 
