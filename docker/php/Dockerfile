@@ -1,21 +1,20 @@
-FROM php:7.2-fpm
+FROM php:5.5-fpm
+
+RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install pdo_mysql
+
+RUN sed -i '/jessie-updates/d' /etc/apt/sources.list
+
 RUN apt-get update
-RUN docker-php-ext-install pdo pdo_mysql mysqli
 
-
-RUN apt-get update && apt-get install -y \
+RUN apt-get install -y libpng-dev \
     libfreetype6-dev \
-        libmcrypt-dev \
-        libpng-dev \
-        libjpeg-dev \
-        libpng-dev \
-        vim \
-    && docker-php-ext-install iconv \
-    && docker-php-ext-configure gd \
-        --enable-gd-native-ttf \
-        --with-freetype-dir=/usr/include/freetype2 \
-        --with-png-dir=/usr/include \
-        --with-jpeg-dir=/usr/include \
-    && docker-php-ext-install gd \
-    && docker-php-ext-install mbstring \
-    && docker-php-ext-enable opcache gd
+    libjpeg-dev
+
+RUN docker-php-ext-configure gd \
+    --enable-gd-native-ttf \
+    --with-freetype-dir=/usr/include/freetype2 \
+    --with-png-dir=/usr/include \
+    --with-jpeg-dir=/usr/include
+
+RUN docker-php-ext-install gd
