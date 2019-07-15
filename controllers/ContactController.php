@@ -75,7 +75,13 @@ class ContactController extends Controller
 
     public function actionDelete($id)
     {
-        // если будет время
+        $model = $this->loadModel($id);
+
+        if ($model->delete()) {
+            return $this->redirect('/contact');
+        }
+
+        return $this->redirect("/contact/view/{$model->ID}");
     }
 
     public function actionSetImage($id)

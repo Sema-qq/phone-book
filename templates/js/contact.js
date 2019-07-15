@@ -13,7 +13,13 @@ function linkHandler() {
     $links.off('click');
     // навесим новые обработчики
     $links.on('click', function (e) { // остановим ссылки и сходим на них сами
-        $.get($(this).attr('href'), {}, function (response) {
+        let $this = $(this);
+        // при удалении спросим, вдруг ошибся
+        if ($this.hasClass('js-delete-contact') && !confirm('Вы точно хотите удалить контакт?')) {
+            return  false;
+        }
+
+        $.get($this.attr('href'), {}, function (response) {
             setContent(response)
         });
 

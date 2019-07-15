@@ -200,7 +200,9 @@ class HtmlHelper
             }
 
             $content .= "<td><a href='/{$url}/view/{$model->{$model->primaryKey()}}' title='Просмотр' aria-label='Просмотр'>&#9787;</a>";
-            $content .= "<a href='/{$url}/update/{$model->{$model->primaryKey()}}' title='Редактировать' aria-label='Редактировать'>&#9998;</a></td>";
+            $content .= "<a href='/{$url}/update/{$model->{$model->primaryKey()}}' title='Редактировать' aria-label='Редактировать'>&#9998;</a>";
+            $content .= "<a href='/{$url}/delete/{$model->{$model->primaryKey()}}' title='Удалить' class='js-delete-contact'";
+            $content .= " aria-label='Удалить' confirm='Вы точно хотите удалить контакт?'>&#10008;</a></td>";
         }
 
         $content .= '</tbody></table></div>';

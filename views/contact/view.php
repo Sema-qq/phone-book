@@ -18,7 +18,9 @@ use extensions\Converter;
 <div class="container">
     <div class="row">
         <a class="btn btn-light" role="button" href="/contact/update/<?= $model->ID ?>">Редактировать</a>
-        <a class="btn btn-light" role="button" href="/contact/set-image/<?= $model->ID ?>">Добавить фото</a>
+        <a class="btn btn-light" role="button" href="/contact/set-image/<?= $model->ID ?>">
+            <?= $model->PHOTO ? 'Изменить фото' : 'Добавить фото' ?>
+        </a>
     </div>
     <br>
     <?= HtmlHelper::tableView($model, [

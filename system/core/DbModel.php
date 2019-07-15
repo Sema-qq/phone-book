@@ -60,6 +60,11 @@ abstract class DbModel extends Model
         return self::find()->one($pk);
     }
 
+    public static function deleteOne($pk)
+    {
+        return self::find()->delete($pk);
+    }
+
     public function save($validate = true)
     {
         if ($validate && !$this->validate()) {
@@ -69,9 +74,16 @@ abstract class DbModel extends Model
         return $this->{$this->primaryKey()} ? $this->update() : $this->insert();
     }
 
-    public function delete()
+    public function delete($pk = null)
     {
-        // удаление, если понадобится или будет время
+        if (!$pk) {
+            $pk = $this->{$this->primaryKey()};
+        }
+
+        $this->_query = "DELETE FROM {$this->getTable()}";
+        $this->_where = [$this->primaryKey() => $pk];
+
+        return (bool)$this->execute();
     }
 
     /**

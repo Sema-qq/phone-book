@@ -60,7 +60,31 @@ class ImageUpload extends Model
     public function validate()
     {
         if ($this->error) {
-            $this->addError('image', "Ошибка при загрузке файла: {$this->error}");
+            switch ($this->error) {
+                case UPLOAD_ERR_INI_SIZE:
+                case UPLOAD_ERR_FORM_SIZE:
+                    $message = "Размер принятого файла превысил максимально допустимый размер: 2 мегабайта.";
+                    break;
+                case UPLOAD_ERR_PARTIAL:
+                    $message = "Загружаемый файл был получен только частично.";
+                    break;
+                case UPLOAD_ERR_NO_FILE:
+                    $message = "Файл не был загружен.";
+                    break;
+                case UPLOAD_ERR_NO_TMP_DIR:
+                    $message = "Отсутствует временная папка.";
+                    break;
+                case UPLOAD_ERR_CANT_WRITE:
+                    $message = "Не удалось записать файл на диск.";
+                    break;
+                case UPLOAD_ERR_EXTENSION:
+                    $message = "Расширение файла нам не подошло.";
+                    break;
+                default:
+                    $message = "Неизвестная ошибка.";
+                    break;
+            }
+            $this->addError('image', "Ошибка при загрузке файла: {$message}");
         } elseif (!$this->name) {
             $this->addError('image', 'Не удалось получить имя файла.');
         } elseif (!in_array($this->_fileInfo->getExtension(), ['jpg', 'png'])) {
