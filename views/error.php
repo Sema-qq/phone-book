@@ -6,5 +6,5 @@
 
 use extensions\HtmlHelper;
 ?>
-<?= HtmlHelper::alerts('danger', $message); ?>
+<?= $message ? HtmlHelper::alerts('danger', $message) : null ?>
 <?= HtmlHelper::getImage('404.jpg'); ?>
